@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "a947343b-cd60-4450-8222-357f9ff9265c",
+		"name": "Lista de Compras API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50727695",
+		"_collection_link": "https://danielbrbaa-1600457.postman.co/workspace/fd9b50fc-f6c0-473f-8d83-3d253f18a0b0/collection/50727695-a947343b-cd60-4450-8222-357f9ff9265c?action=share&source=collection_link&creator=50727695"
+	},
+	"item": [
+		{
+			"name": "GET - Listar Itens",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/items",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - Criar Item",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Arroz\",\n    \"quantity\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/items",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - Buscar Item por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/items/5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"items",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - Marcar como Comprado",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"purchased\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/items/5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"items",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - Atualizar Quantidade",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quantity\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/items/5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"items",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - Editar Nome",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Arroz Integral\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/items/5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"items",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE - Deletar Item",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"success\": true,\n    \"message\": \"Item deletado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/items/5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"items",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - Estatísticas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/stats",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
