@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Compras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 120px;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="number"] {
+            text-align: center;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        .items-section {
+            margin-top: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .clear-btn {
+            background: #dc3545;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+        }
+
+        .item-card {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            display: grid;
+            grid-template-columns: 50px 1fr auto;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .item-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .item-card.purchased {
+            opacity: 0.6;
+            background: #f8f9fa;
+            border-color: #28a745;
+        }
+
+        .item-quantity {
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .item-card.purchased .item-quantity {
+            background: #28a745;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .item-card.purchased .item-name {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-check {
+            background: #28a745;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .btn-check:hover {
+            background: #218838;
+        }
+
+        .btn-uncheck {
+            background: #ffc107;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .btn-uncheck:hover {
+            background: #e0a800;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .item-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .item-actions {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛒 Lista de Compras</h1>
+        <p class="subtitle">Organize suas compras de forma simples e eficiente</p>
+
+        <div id="status" class="status"></div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalItems">0</div>
+                <div class="stat-label">Total de Itens</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendingItems">0</div>
+                <div class="stat-label">A Comprar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="purchasedItems">0</div>
+                <div class="stat-label">Comprados</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 style="margin-bottom: 20px;">➕ Adicionar Item</h2>
+            <form id="itemForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Nome do Item *</label>
+                        <input type="text" id="name" required placeholder="Ex: Arroz, Feijão, Leite...">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantidade</label>
+                        <input type="number" id="quantity" min="1" value="1">
+                    </div>
+                </div>
+                <button type="submit">Adicionar à Lista</button>
+            </form>
+        </div>
+
+        <div class="items-section">
+            <div class="section-header">
+                <h2 class="section-title">📋 Meus Itens</h2>
+                <button class="clear-btn" onclick="clearPurchased()">Limpar Comprados</button>
+            </div>
+            <div id="itemsList"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://56.124.100.108:3000/api';
+
+        // Carregar itens e estatísticas ao iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadItems();
+            loadStats();
+        });
+
+        // Submit do form
+        document.getElementById('itemForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+
+            try {
+                const response = await fetch(`${API_URL}/items`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, quantity })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showStatus('Item adicionado com sucesso! 🎉', 'success');
+                    document.getElementById('itemForm').reset();
+                    document.getElementById('quantity').value = 1;
+                    loadItems();
+                    loadStats();
+                } else {
+                    showStatus('Erro ao adicionar item', 'error');
+                }
+            } catch (error) {
+                showStatus('Erro de conexão com a API', 'error');
+                console.error(error);
+            }
+        });
+
+        // Carregar todos os itens
+        async function loadItems() {
+            try {
+                const response = await fetch(`${API_URL}/items`);
+                const data = await response.json();
+
+                const itemsList = document.getElementById('itemsList');
+
+                if (data.success && data.data.length > 0) {
+                    itemsList.innerHTML = data.data.map(item => `
+                        <div class="item-card ${item.purchased ? 'purchased' : ''}">
+                            <div class="item-quantity">${item.quantity}</div>
+                            <div class="item-info">
+                                <div class="item-name">${item.name}</div>
+                            </div>
+                            <div class="item-actions">
+                                ${item.purchased ? `
+                                    <button class="btn-uncheck" onclick="togglePurchased(${item.id}, false)">
+                                        ↩️ Desfazer
+                                    </button>
+                                ` : `
+                                    <button class="btn-check" onclick="togglePurchased(${item.id}, true)">
+                                        ✅ Comprei
+                                    </button>
+                                `}
+                                <button class="btn-delete" onclick="deleteItem(${item.id})">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    itemsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">🛒</div>
+                            <p>Sua lista está vazia!</p>
+                            <p style="font-size: 14px; margin-top: 10px;">Adicione itens acima para começar</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                showStatus('Erro ao carregar itens', 'error');
+                console.error(error);
+            }
+        }
+
+        // Carregar estatísticas
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_URL}/stats`);
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('totalItems').textContent = data.data.total;
+                    document.getElementById('pendingItems').textContent = data.data.pending;
+                    document.getElementById('purchasedItems').textContent = data.data.purchased;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+            }
+        }
+
+        // Marcar como comprado/não comprado
+        async function togglePurchased(id, purchased) {
+            try {
+                const response = await fetch(`${API_URL}/items/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ purchased })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showStatus(purchased ? 'Item marcado como comprado! ✅' : 'Item desmarcado', 'success');
+                    loadItems();
+                    loadStats();
+                }
+            } catch (error) {
+                showStatus('Erro ao atualizar item', 'error');
+                console.error(error);
+            }
+        }
+
+        // Deletar item
+        async function deleteItem(id) {
+            if (!confirm('Tem certeza que deseja remover este item?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/items/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showStatus('Item removido! 🗑️', 'success');
+                    loadItems();
+                    loadStats();
+                }
+            } catch (error) {
+                showStatus('Erro ao deletar item', 'error');
+                console.error(error);
+            }
+        }
+
+        // Limpar todos os itens comprados
+        async function clearPurchased() {
+            if (!confirm('Deseja remover todos os itens comprados?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/items`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const purchased = data.data.filter(item => item.purchased);
+                    
+                    for (const item of purchased) {
+                        await fetch(`${API_URL}/items/${item.id}`, {
+                            method: 'DELETE'
+                        });
+                    }
+
+                    showStatus('Itens comprados removidos! 🧹', 'success');
+                    loadItems();
+                    loadStats();
+                }
+            } catch (error) {
+                showStatus('Erro ao limpar itens', 'error');
+                console.error(error);
+            }
+        }
+
+        // Mostrar mensagem de status
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            
+            setTimeout(() => {
+                status.className = 'status';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
